@@ -18,8 +18,8 @@ import java.util.List;
 public class AppService {
 
     //inject RestTemplate, so we can call another api endpoints which are outside this service
-    @Autowired
-    private RestTemplate restTemplate;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @Autowired
     private ProductRepository repProduct;
@@ -36,9 +36,9 @@ public class AppService {
 
     // using RestTemplate to call the other endpoint which is outside this service,
     // communicating with other microservice
-    public User callOutsideEndpoint(String userId) {
-        String myUrl = "https://localhost:8093/users" + userId;
-        User u = restTemplate.getForObject(myUrl, User.class);
-        return u;
-    }
+//    public User callOutsideEndpoint(String userId) {
+//        String myUrl = "https://localhost:8093/users" + userId;
+//        User u = restTemplate.getForObject(myUrl, User.class);
+//        return u;
+//    }
 }
