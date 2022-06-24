@@ -1,4 +1,6 @@
 # Getting Started
+mvn spring-boot:run -Dspring.profiles.active=development -Dspring.mail.username=# -Dspring.mail.password=#
+
 
 ### Reference Documentation
 For further reference, please consider the following sections:

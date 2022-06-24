@@ -1,14 +1,18 @@
 package com.zkz.email.service;
 
-import com.zkz.email.entity.Product;
-import com.zkz.email.entity.User;
-import com.zkz.email.repository.ProductRepository;
+import com.zkz.email.configuration.AppProperties;
+import com.zkz.email.dto.EmailObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
 
 /**
  * Created by Jason Zhuang on 17/11/21.
@@ -17,28 +21,81 @@ import java.util.List;
 @Service
 public class AppService {
 
-    //inject RestTemplate, so we can call another api endpoints which are outside this service
-//    @Autowired
-//    private RestTemplate restTemplate;
+    @Autowired
+    private AppProperties appProperties;
 
     @Autowired
-    private ProductRepository repProduct;
+    JavaMailSender emailSender;
 
-    public List<Product> getProducts() {
-        return repProduct.findAll();
+    @Autowired
+    public SimpleMailMessage template;
+
+    /**
+     * @param email
+     */
+    public void sendSimpleMessage(EmailObject email) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(appProperties.getMailUsername());
+            message.setTo(email.getReceiver());
+            message.setSubject(email.getSubject());
+            message.setText(email.getTextBody());
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public Product getProductById(long id) {
-        Product retValue = new Product();
-        retValue = repProduct.getById(id);
-        return retValue;
+    /**
+     * @param email
+     */
+    public void sendMessageWithAttachment(EmailObject email) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(appProperties.getMailUsername());
+            helper.setTo(email.getReceiver());
+            helper.setSubject(email.getSubject());
+            helper.setText(email.getTextBody());
+
+            FileSystemResource file = new FileSystemResource(new File(email.getPathToAttachment()));
+            helper.addAttachment(file.getFilename(), file);
+//            ClassPathResource myFile = new ClassPathResource(email.getAttachmentName());
+//            helper.addAttachment(email.getAttachmentName(), file);
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // using RestTemplate to call the other endpoint which is outside this service,
-    // communicating with other microservice
-//    public User callOutsideEndpoint(String userId) {
-//        String myUrl = "https://localhost:8093/users" + userId;
-//        User u = restTemplate.getForObject(myUrl, User.class);
-//        return u;
-//    }
+    /**
+     *
+     * @param email
+     */
+    public void sendHtmlMessage(EmailObject email) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+
+            // Enable the multipart flag!
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setFrom(appProperties.getMailUsername());
+            helper.setTo(email.getReceiver());
+            helper.setSubject(email.getSubject());
+
+            String text = String.format(template.getText(), email.getTextBody());
+            message.setText(text);
+
+            helper.setText("<html><body>Here is a cat picture! <img src='cid:id101'/><body></html>", true);
+
+
+
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
