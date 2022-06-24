@@ -6,7 +6,8 @@
 <body>
 <div style="padding: 20px;
             margin: 20px auto;
-            width:50%;
+            width:70%;
+            min-width: 300px;
             height:auto;
             border: 2px solid grey;
             border-radius: 5px;
@@ -16,13 +17,12 @@
     <div style="height: auto;">
         <p>
             Thank you for creating your <span th:text="${appName}"></span> account.
-            Please verify your email address to complete your registration by clicking the below verify your email
-            address button. If you can't click the link, copy and paste the URL into your browser's address bar, and hit
-            enter.
+            Please verify your email address to complete your registration by clicking the below Verify Your Email
+            Address button.
         </p>
     </div>
-    <div style="margin: 10px; text-align: center;">
-        <a style="font-size: 20px;
+    <div style="text-align: center;">
+        <a style="font-size: 18px;
             font-family: Helvetica,Arial,sans-serif;
             text-decoration: none;
             border-radius: 4.8px;
@@ -33,6 +33,7 @@
             background-color: #2ec866;
             color: #ffffff;
             padding: 8px 16px;
+            width: auto;
             border: 1px solid #31789b;"
            target="_blank"
            th:href="${verifyAddress}">
