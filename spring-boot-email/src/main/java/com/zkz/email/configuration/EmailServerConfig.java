@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class EmailServerConfiguration {
+public class EmailServerConfig {
 
     @Autowired
     private AppProperties appProperties;
@@ -36,7 +36,7 @@ public class EmailServerConfiguration {
     @Bean
     public SimpleMailMessage templateSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
-//        Properties p = FetchProperties.fetchProperties("templates/email.html");
+//        Properties p = FetchProperties.fetchProperties("templates/EmailTemplate.html");
 //        System.out.println(p.toString());
 
         message.setText("<html>" +

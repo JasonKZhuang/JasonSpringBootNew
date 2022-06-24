@@ -4,15 +4,17 @@ import com.zkz.email.configuration.AppProperties;
 import com.zkz.email.dto.EmailObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by Jason Zhuang on 17/11/21.
@@ -22,13 +24,16 @@ import java.io.File;
 public class AppService {
 
     @Autowired
-    private AppProperties appProperties;
+    AppProperties appProperties;
 
     @Autowired
     JavaMailSender emailSender;
 
     @Autowired
-    public SimpleMailMessage template;
+    SimpleMailMessage template;
+
+    @Autowired
+    SpringTemplateEngine springTemplateEngine;
 
     /**
      * @param email
@@ -70,32 +75,26 @@ public class AppService {
     }
 
     /**
-     *
      * @param email
      */
     public void sendHtmlMessage(EmailObject email) {
         try {
             MimeMessage message = emailSender.createMimeMessage();
-
             // Enable the multipart flag!
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
             helper.setFrom(appProperties.getMailUsername());
             helper.setTo(email.getReceiver());
             helper.setSubject(email.getSubject());
 
-            String text = String.format(template.getText(), email.getTextBody());
-            message.setText(text);
-
-            helper.setText("<html><body>Here is a cat picture! <img src='cid:id101'/><body></html>", true);
-
-
-
+            Context context = new Context();
+            context.setVariables(email.getProperties());
+            String html = springTemplateEngine.process(email.getTemplate(), context);
+            helper.setText(html, true);
+//            log.info("Sending email: {} with html body: {}", email, html);
             emailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 }
