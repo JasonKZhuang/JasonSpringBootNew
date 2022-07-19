@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="LOG_PATH" value="log/spring-boot-webclient"/>
+    <property name="ARTIFACT_ID" value="spring-boot-webclient"/>
+    <property name="CONSOLE_LOG_PATTERN" value="[%d] [%thread] %yellow([%logger{36}:%L]) %highlight([%-5level]) - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${ARTIFACT_ID}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${ARTIFACT_ID}.%d.log</fileNamePattern>
+            <maxHistory>365</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.hibernate">
+        <level value="warn"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
