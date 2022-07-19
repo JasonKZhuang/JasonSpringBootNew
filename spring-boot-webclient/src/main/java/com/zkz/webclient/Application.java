@@ -12,14 +12,6 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	/**
-	 * Synchronous(TongBu) client to perform HTTP requests,
-	 * exposing a simple, template method API over underlying HTTP client libraries such as the JDK HttpURLConnection, Apache HttpComponents, and others.
-	 * The RestTemplate offers templates for common scenarios by HTTP method,
-	 * in addition to the generalized exchange and execute methods that support of less frequent cases.
-	 * For example, the restTemplate can be injected to service to cal other Http endpoints
-	 * @return
-	 */
 	@Bean
 	public RestTemplate restTemplate(){
 		return  new RestTemplate();

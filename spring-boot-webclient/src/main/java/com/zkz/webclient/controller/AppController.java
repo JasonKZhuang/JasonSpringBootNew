@@ -1,13 +1,19 @@
 package com.zkz.webclient.controller;
 
 import com.zkz.webclient.dto.ProductDTO;
+import com.zkz.webclient.dto.ResponseDTO;
 import com.zkz.webclient.service.AppService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * Created by Jason Zhuang 17/07/2022
+ * Created by Jason Zhuang 19/17/22
  */
 
 //RestController indicates that the data returned by each method will be written straight into the response body
@@ -24,10 +30,13 @@ public class AppController {
     public String welcome() {
         return "Hello Microservices";
     }
-
-    @PostMapping("send")
-    public String send(@RequestBody ProductDTO productDTO) {
-//        appService.sendSimpleMessage(emailObject);
-        return "ok";
+    @GetMapping("/users")
+    public List<Object> send() {
+        return appService.callGetByWebClient();
+    }
+    @PostMapping("/send")
+    public Map<String,String> send(@RequestBody ProductDTO productDTO) {
+        Map<String,String> map = appService.callPostByWebClient();
+        return map;
     }
 }

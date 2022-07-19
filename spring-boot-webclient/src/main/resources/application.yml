@@ -1,0 +1,88 @@
+# log configuration
+logging:
+  level:
+    root: INFO
+  org:
+    springframework: ERROR
+    hibernate: ERROR
+
+# server configuration
+server:
+  port: 9001
+
+# customized properties
+customized:
+  application:
+    name: SpringBoot WebClient
+    description: This is a Spring Boot WebClient application
+  emailService:
+    apiKey: #
+
+# Spring environment configuration
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: #
+
+---
+spring:
+  profiles:
+    default: "development"
+
+#------------------------------------------------------------------------------------------------------
+# development profile
+#------------------------------------------------------------------------------------------------------
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+  datasource:
+    url: #
+    username: u
+    password: p
+server:
+  port: 9001
+customized:
+  application:
+    name: Microservice Template development
+
+#------------------------------------------------------------------------------------------------------
+# staging profile
+#------------------------------------------------------------------------------------------------------
+---
+spring:
+  config:
+    activate:
+      on-profile: staging
+  datasource:
+    url: #
+    username: u
+    password: p
+server:
+  port: 9002
+customized:
+  application:
+    name: Microservice Template staging
+
+#------------------------------------------------------------------------------------------------------
+# production profile
+#------------------------------------------------------------------------------------------------------
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: #
+    username: u
+    password: p
+server:
+  port: 9003
+customized:
+  application:
+    name: Microservice Template production

@@ -1,8 +1,6 @@
 # Intellij IDE
 **/.idea
 *.iml
-*.yml
-*.yaml
 *.gitattributes
 *.DS_Store
 
