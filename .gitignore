@@ -4,6 +4,10 @@
 *.gitattributes
 *.DS_Store
 
+#configuration
+#*.yml
+#*.yaml
+
 # mvn
 ./mvn
 **/.mvn

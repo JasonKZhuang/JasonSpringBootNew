@@ -1,0 +1,77 @@
+# log configuration
+logging:
+  level:
+    root: INFO
+  org:
+    springframework: ERROR
+    hibernate: ERROR
+
+# server configuration
+server:
+  port: 9000
+
+# customized properties
+customized:
+  application:
+    name: spring-boot-data-jpa
+    description: This is a Spring Boot application for data jpa
+
+# Spring environment configuration
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+spring:
+  profiles:
+    default: "development"
+
+#------------------------------------------------------------------------------------------------------
+# development profile
+#------------------------------------------------------------------------------------------------------
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+  datasource:
+    url: jdbc:mysql://localhost:3306/JasonSpringBootDB?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: u
+    password: p
+server:
+  port: 9000
+
+#------------------------------------------------------------------------------------------------------
+# staging profile
+#------------------------------------------------------------------------------------------------------
+---
+spring:
+  config:
+    activate:
+      on-profile: staging
+  datasource:
+    url: jdbc:mysql://localhost:3306/JasonSpringBootDB?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: u
+    password: p
+server:
+  port: 9002
+
+#------------------------------------------------------------------------------------------------------
+# production profile
+#------------------------------------------------------------------------------------------------------
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: jdbc:mysql://localhost:3306/JasonSpringBootDB?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: u
+    password: p
+server:
+  port: 9003
